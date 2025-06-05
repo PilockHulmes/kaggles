@@ -25,9 +25,8 @@ for i in range(len(test_dataset)):
     id = test_dataset.getPassengerId(i)
     features, _ = test_dataset[i]
     predicted = model.predict([features.numpy()])
-    print(predicted)
     transported = predicted[0]
-    output_df = pd.concat([output_df, pd.DataFrame({"PassengerId": [id] , "Transported": [transported]})], ignore_index=True)
-    print(i, id, transported)
+    output_df = pd.concat([output_df, pd.DataFrame({"PassengerId": [id] , "Transported": [transported == 1]})], ignore_index=True)
 
+output_df.to_csv("./submission.csv", index=False)
 print(output_df)

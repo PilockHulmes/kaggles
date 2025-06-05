@@ -34,7 +34,13 @@ class TitanicDataset(Dataset):
         # feature engineering
         with pd.option_context("future.no_silent_downcasting", True):
             df["CryoSleep"] = df["CryoSleep"].fillna(False).infer_objects(copy=False)
+            df['Age'] = df['Age'].fillna(df['Age'].median())
             df["VIP"] = df["VIP"].fillna(False).infer_objects(copy=False)
+            df["RoomService"] = df["RoomService"].fillna(0)
+            df["FoodCourt"] = df["FoodCourt"].fillna(0)
+            df["ShoppingMall"] = df["ShoppingMall"].fillna(0)
+            df["Spa"] = df["Spa"].fillna(0)
+            df["VRDeck"] = df["VRDeck"].fillna(0)
             df["HomePlanet"] = df["HomePlanet"].fillna("Unknown")
             df = df.join(pd.get_dummies(df['HomePlanet'], prefix='HomePlanet'))
             df["Destination"] = df["Destination"].fillna("Unknown")
@@ -52,7 +58,7 @@ class TitanicDataset(Dataset):
 
     def __len__(self):
         return self.df.shape[0]
-    
+
     def __getitem__(self, i):
         row = self.df.iloc[i]
         list_item = [
@@ -78,7 +84,7 @@ class TitanicDataset(Dataset):
         ]
 
         features = torch.from_numpy(np.array(list_item))
-        return features, row["Transported"] == 1
+        return features.to(torch.float32), row["Transported"]
 
     def getPassengerId(self, i):
         return self.df.iloc[i]["PassengerId"]
