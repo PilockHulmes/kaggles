@@ -5,6 +5,7 @@ scikit-learn
 xgboost
 matplotlib
 seaborn
+missingno
 torch -i https://download.pytorch.org/whl/cu128
 torchvision -i https://download.pytorch.org/whl/cu128
 torchaudio -i https://download.pytorch.org/whl/cu128
