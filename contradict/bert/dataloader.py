@@ -1,10 +1,11 @@
-from transformers import BertTokenizer
+from transformers import AutoTokenizer
 from torch.utils.data import Dataset
+import torch
 
 # Load the BERT tokenizer.
 print('Loading BERT tokenizer...')
-tokenizer = BertTokenizer.from_pretrained("bert-base-multilingual-cased", do_lower_case=True)
-MAX_LEN = 256
+tokenizer = AutoTokenizer.from_pretrained("answerdotai/ModernBERT-base", do_lower_case=True)
+MAX_LEN = 512
 
 class CompDataset(Dataset):
     def __init__(self, df):
@@ -29,7 +30,7 @@ class CompDataset(Dataset):
         att_mask = encoded_dict['attention_mask'][0]
         token_type_ids = encoded_dict['token_type_ids'][0]
         # Convert the target to a torch tensor
-        target = torch.tensor(self.df_data.loc[index, 'label'])
+        target = torch.tensor(self.df_data.loc[index, 'label']).to("cuda")
         sample = (padded_token_list, att_mask, token_type_ids, target)
         return sample
 

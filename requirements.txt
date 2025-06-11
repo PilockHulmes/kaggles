@@ -7,6 +7,7 @@ matplotlib
 seaborn
 missingno
 transformers
+catboost
 torch -i https://download.pytorch.org/whl/cu128
 torchvision -i https://download.pytorch.org/whl/cu128
 torchaudio -i https://download.pytorch.org/whl/cu128
